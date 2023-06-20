@@ -4,27 +4,31 @@ const longBreakButton = document.querySelector("#long-break");
 const timerString = document.querySelector(".timer-string");
 const startButton = document.querySelector("#start");
 const resetButton = document.querySelector("#reset");
-let time = timerString.textContent;
-let timeInSeconds = time.slice(0, time.indexOf(':')) * 60 + +time.slice(time.indexOf(':') + 1);
-
+let time;
+let timeInSeconds;
 let nIntervId;
 
 
 
 pomodoroButton.addEventListener('click', () => {
-    timerString.textContent = "25:00";
+    resetTimer('25:00');
 });
 
 shortBreakButton.addEventListener('click', () => {
-    timerString.textContent = "05:00";
+    resetTimer('05:00');
 });
 
 longBreakButton.addEventListener('click', () => {
-    timerString.textContent = "15:00";
+    resetTimer('15:00');
+});
+
+resetButton.addEventListener('click', () => {
+    resetTimer('25:00');
 });
 
 startButton.addEventListener('click', () => {
-
+    time = timerString.textContent;
+    timeInSeconds = time.slice(0, time.indexOf(':')) * 60 + +time.slice(time.indexOf(':') + 1);
     if (startButton.textContent === "Start") {
         startButton.textContent = "Pause";
         if (!nIntervId) {
@@ -40,8 +44,15 @@ startButton.addEventListener('click', () => {
 });
 
 function timer() {
-    timerString.textContent = (timeInSeconds % 60 > 9) ? `${Math.floor(timeInSeconds / 60)}:${timeInSeconds % 60}` : `${Math.round(timeInSeconds / 60)}:0${timeInSeconds % 60}`;
+    const minutes = Math.floor(timeInSeconds / 60) > 9 ? Math.floor(timeInSeconds / 60) : '0' + Math.floor(timeInSeconds / 60);
+    const seconds = (timeInSeconds % 60 > 9) ? timeInSeconds % 60 : '0' + timeInSeconds % 60
+    timerString.textContent = `${minutes}:${seconds}`;
     timeInSeconds--;
 }
 
-resetButton.addEventListener()
+function resetTimer(newTime) {
+    clearInterval(nIntervId);
+    nIntervId = null;
+    timerString.textContent = newTime;
+    startButton.textContent = "Start";
+}
