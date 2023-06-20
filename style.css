@@ -1,0 +1,42 @@
+.main-container {
+  margin: 0 auto;
+  padding: 50px;
+  max-width: 500px;
+  width: 100%;
+  background-color: #08929e;
+  border-radius: 6px;
+}
+.button-container {
+  margin: 0 auto;
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.button {
+  border: none;
+  margin: 0px;
+  border-radius: 4px;
+  font-family: ArialRounded;
+  font-size: 16px;
+  padding: 2px 12px;
+  height: 28px;
+  cursor: pointer;
+  background: none rgba(0, 0, 0, 0.15);
+  box-shadow: none;
+  color: white;
+  opacity: 1;
+  font-weight: bold;
+}
+.button:focus {
+  outline: none;
+}
+.timer-string {
+  text-align: center;
+  font-size: 120px;
+  font-weight: bold;
+  margin-top: 20px;
+  color: rgb(84, 224, 177);
+}
