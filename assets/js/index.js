@@ -8,14 +8,16 @@ let time;
 let timeInSeconds;
 let nIntervId;
 
-
+let audio = new Audio();
+audio.preload = 'auto';
+audio.src = './assets/audio/facebook_tone.mp3';
 
 pomodoroButton.addEventListener('click', () => {
     resetTimer('25:00');
 });
 
 shortBreakButton.addEventListener('click', () => {
-    resetTimer('05:00');
+    resetTimer('00:10');
 });
 
 longBreakButton.addEventListener('click', () => {
@@ -34,6 +36,13 @@ startButton.addEventListener('click', () => {
         if (!nIntervId) {
             nIntervId = setInterval(timer, 1000);
         }
+        if (timeInSeconds === 0) {
+            clearInterval(nIntervId);
+            nIntervId = null;
+
+        }
+
+
     }
     else {
         startButton.textContent = "Start";
@@ -47,7 +56,13 @@ function timer() {
     const minutes = Math.floor(timeInSeconds / 60) > 9 ? Math.floor(timeInSeconds / 60) : '0' + Math.floor(timeInSeconds / 60);
     const seconds = (timeInSeconds % 60 > 9) ? timeInSeconds % 60 : '0' + timeInSeconds % 60
     timerString.textContent = `${minutes}:${seconds}`;
-    timeInSeconds--;
+    if (timeInSeconds !== 0)
+        timeInSeconds--;
+    else {
+        audio.play();
+        clearInterval(nIntervId);
+        nIntervId = null;
+    }
 }
 
 function resetTimer(newTime) {
