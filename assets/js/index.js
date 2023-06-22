@@ -21,13 +21,13 @@ let audio = new Audio();
 audio.preload = 'auto';
 audio.src = './assets/audio/facebook_tone.mp3';
 
-pomodoroButton.addEventListener('click', () => { resetTimer(pomodoroSeconds, pomodoro); });
+pomodoroButton.addEventListener('click', () => { resetTimer(pomodoroSeconds, pomodoro); switchTimer(); });
 
-shortBreakButton.addEventListener('click', () => { resetTimer(shortBreakSeconds, shortBreak); });
+shortBreakButton.addEventListener('click', () => { resetTimer(shortBreakSeconds, shortBreak); switchTimer(); });
 
-longBreakButton.addEventListener('click', () => { resetTimer(longBreakSeconds, longBreak); });
+longBreakButton.addEventListener('click', () => { resetTimer(longBreakSeconds, longBreak); switchTimer(); });
 
-resetButton.addEventListener('click', () => { resetTimer(); });
+resetButton.addEventListener('click', () => { resetTimer(); switchTimer(); });
 
 switchButton.addEventListener('click', () => { switchTimer(); });
 
@@ -35,7 +35,6 @@ switchButton.addEventListener('click', () => { switchTimer(); });
 function resetTimer(newTime = null, state = null) {
     timerState = state ?? timerState;
     if (!newTime) {
-        /*choose newTime value */
         switch (timerState) {
             case 'pomodoro': newTime = pomodoroSeconds; break;
             case 'shortBreak': newTime = shortBreakSeconds; break;
@@ -69,10 +68,13 @@ function onTimer() {
     else {
         audio.play();
         clearInterval(nIntervId);
-        if (timerState === pomodoro && numberOfPomodoro === 3) { setTimeout(() => { resetTimer(longBreakSeconds, longBreak); }, 2000); }
-        else if (timerState === pomodoro) { setTimeout(() => { resetTimer(shortBreakSeconds, shortBreak); }, 2000); numberOfPomodoro++; }
-        else if (timerState === shortBreak) { setTimeout(() => { resetTimer(pomodoroSeconds, pomodoro); }, 2000); }
-        else if (timerState === longBreak) { setTimeout(() => { resetTimer(pomodoroSeconds, pomodoro); }, 2000); }
+        if (timerState === pomodoro && numberOfPomodoro === 3) {
+            setTimeout(() => { resetTimer(longBreakSeconds, longBreak); switchTimer(); }, 2000);
+            numberOfPomodoro = 0;
+        }
+        else if (timerState === pomodoro) { setTimeout(() => { resetTimer(shortBreakSeconds, shortBreak); switchTimer(); }, 2000); numberOfPomodoro++; }
+        else if (timerState === shortBreak) { setTimeout(() => { resetTimer(pomodoroSeconds, pomodoro); switchTimer(); }, 2000); }
+        else if (timerState === longBreak) { setTimeout(() => { resetTimer(pomodoroSeconds, pomodoro); switchTimer(); }, 2000); }
     }
 }
 
