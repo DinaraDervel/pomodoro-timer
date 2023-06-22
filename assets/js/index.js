@@ -1,73 +1,84 @@
+//get access to DOM elements
 const pomodoroButton = document.querySelector("#pomodoro");
 const shortBreakButton = document.querySelector("#short-break");
 const longBreakButton = document.querySelector("#long-break");
 const timerString = document.querySelector(".timer-string");
-const startButton = document.querySelector("#start");
+const switchButton = document.querySelector("#switch");
 const resetButton = document.querySelector("#reset");
-let time;
-let timeInSeconds;
-let nIntervId;
-
+//global variables
+const pomodoroSeconds = 25;
+const shortBreakSeconds = 5;
+const longBreakSeconds = 15;
+const pomodoro = 'pomodoro';
+const shortBreak = 'shortBreak';
+const longBreak = 'longBreak';
+let timerState = pomodoro;
+let timeInSeconds = pomodoroSeconds;
+let nIntervId = null;
+let numberOfPomodoro = 0;
+//timer end sound
 let audio = new Audio();
 audio.preload = 'auto';
 audio.src = './assets/audio/facebook_tone.mp3';
 
-pomodoroButton.addEventListener('click', () => {
-    resetTimer('25:00');
-});
+pomodoroButton.addEventListener('click', () => { resetTimer(pomodoroSeconds, pomodoro); });
 
-shortBreakButton.addEventListener('click', () => {
-    resetTimer('00:10');
-});
+shortBreakButton.addEventListener('click', () => { resetTimer(shortBreakSeconds, shortBreak); });
 
-longBreakButton.addEventListener('click', () => {
-    resetTimer('15:00');
-});
+longBreakButton.addEventListener('click', () => { resetTimer(longBreakSeconds, longBreak); });
 
-resetButton.addEventListener('click', () => {
-    resetTimer('25:00');
-});
+resetButton.addEventListener('click', () => { resetTimer(); });
 
-startButton.addEventListener('click', () => {
-    time = timerString.textContent;
-    timeInSeconds = time.slice(0, time.indexOf(':')) * 60 + +time.slice(time.indexOf(':') + 1);
-    if (startButton.textContent === "Start") {
-        startButton.textContent = "Pause";
-        if (!nIntervId) {
-            nIntervId = setInterval(timer, 1000);
+switchButton.addEventListener('click', () => { switchTimer(); });
+
+
+function resetTimer(newTime = null, state = null) {
+    timerState = state ?? timerState;
+    if (!newTime) {
+        /*choose newTime value */
+        switch (timerState) {
+            case 'pomodoro': newTime = pomodoroSeconds; break;
+            case 'shortBreak': newTime = shortBreakSeconds; break;
+            case 'longBreak': newTime = longBreakSeconds; break;
         }
-        if (timeInSeconds === 0) {
-            clearInterval(nIntervId);
-            nIntervId = null;
+    }
+    clearInterval(nIntervId);
+    timeInSeconds = newTime;
+    timerString.textContent = secondsToString();
+    switchButton.textContent = "Start";
+    pomodoroButton.style.color = (timerState === pomodoro) ? '#090950' : 'white';
+    shortBreakButton.style.color = (timerState === shortBreak) ? '#090950' : 'white';
+    longBreakButton.style.color = (timerState === longBreak) ? '#090950' : 'white';
+}
 
-        }
-
-
+function switchTimer() {
+    if (switchButton.textContent === "Start") {
+        switchButton.textContent = "Pause";
+        nIntervId = setInterval(onTimer, 1000);
     }
     else {
-        startButton.textContent = "Start";
+        switchButton.textContent = "Start";
         clearInterval(nIntervId);
-        nIntervId = null;
     }
+}
 
-});
-
-function timer() {
-    const minutes = Math.floor(timeInSeconds / 60) > 9 ? Math.floor(timeInSeconds / 60) : '0' + Math.floor(timeInSeconds / 60);
-    const seconds = (timeInSeconds % 60 > 9) ? timeInSeconds % 60 : '0' + timeInSeconds % 60
-    timerString.textContent = `${minutes}:${seconds}`;
-    if (timeInSeconds !== 0)
+function onTimer() {
+    timerString.textContent = secondsToString();
+    if (timeInSeconds > 0)
         timeInSeconds--;
     else {
         audio.play();
         clearInterval(nIntervId);
-        nIntervId = null;
+        if (timerState === pomodoro && numberOfPomodoro === 3) { setTimeout(() => { resetTimer(longBreakSeconds, longBreak); }, 2000); }
+        else if (timerState === pomodoro) { setTimeout(() => { resetTimer(shortBreakSeconds, shortBreak); }, 2000); numberOfPomodoro++; }
+        else if (timerState === shortBreak) { setTimeout(() => { resetTimer(pomodoroSeconds, pomodoro); }, 2000); }
+        else if (timerState === longBreak) { setTimeout(() => { resetTimer(pomodoroSeconds, pomodoro); }, 2000); }
     }
 }
 
-function resetTimer(newTime) {
-    clearInterval(nIntervId);
-    nIntervId = null;
-    timerString.textContent = newTime;
-    startButton.textContent = "Start";
+function secondsToString() {
+    const minutes = Math.floor(timeInSeconds / 60) > 9 ? Math.floor(timeInSeconds / 60) : '0' + Math.floor(timeInSeconds / 60);
+    const seconds = (timeInSeconds % 60 > 9) ? timeInSeconds % 60 : '0' + timeInSeconds % 60
+    return `${minutes}:${seconds}`;
 }
+

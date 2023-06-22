@@ -30,8 +30,8 @@
   opacity: 1;
   font-weight: bold;
 }
-.button:focus {
-  outline: none;
+.button:first-of-type {
+  color: #090950;
 }
 .timer-string {
   text-align: center;
