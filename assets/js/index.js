@@ -6,9 +6,9 @@ const timerString = document.querySelector(".timer-string");
 const switchButton = document.querySelector("#switch");
 const resetButton = document.querySelector("#reset");
 //global variables
-const pomodoroSeconds = 25;
-const shortBreakSeconds = 5;
-const longBreakSeconds = 15;
+const pomodoroSeconds = 25 * 60;
+const shortBreakSeconds = 5 * 60;
+const longBreakSeconds = 15 * 60;
 const pomodoro = 'pomodoro';
 const shortBreak = 'shortBreak';
 const longBreak = 'longBreak';
@@ -83,4 +83,3 @@ function secondsToString() {
     const seconds = (timeInSeconds % 60 > 9) ? timeInSeconds % 60 : '0' + timeInSeconds % 60
     return `${minutes}:${seconds}`;
 }
-
