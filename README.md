@@ -1,14 +1,16 @@
 # pomodoro-timer
-<p>Второй блок к тестовому <a href="https://modern-whistle-d80.notion.site/Front-Seasons-2b8a4e8273ba4ab6a09c23ed785a4fed">заданию</a> Front Seasons</p>
-Функциональность:
+
+Functionality:
+
 <ul>
-    <li> Реализован таймер, который отсчитывает 25 минут работы и 5 минут отдыха (15 минут для длинных перерывов после четырех промежутков работы).</li>
-    <li> Пользователю предоставлена возможность приостанавливать или сбрасывать таймер.</li>
-    <li> Также реализована возможность запускать таймеры работы, короткого и длинного перерывов по нажатию на соответствующую кнопку.</li>
+    <li>Implemented a timer that counts down 25 minutes of work followed by a 5-minute break (15 minutes for longer breaks after four work intervals).</li>
+    <li>Users have the ability to pause or reset the timer.</li>
+    <li>Additionally, there is the functionality to start timers for work, short breaks, and long breaks by clicking the corresponding buttons.</li>
 </ul>
-Технологии:
+Technologies:
+
 <ul>
-    <li> Приложение разработано с использованием только HTML, CSS и JavaScript.</li>
-    <li> Поддерживаемые браузеры: Google Chrome последней на момент публикации версии.</li>
+    <li>The application is developed using only HTML, CSS, and JavaScript.</li>
+    <li>Supported browsers: Google Chrome, latest version at the time of publication.</li>
 </ul>
-<a href="https://dinaradervel.github.io/pomodoro-timer/">Результат</a> работы - готовый к запуску в браузере HTML с подключенными скриптами и стилями.
+<a href="https://dinaradervel.github.io/pomodoro-timer/">Result:</a> The output is a ready-to-launch HTML file with connected scripts and styles, suitable for running in a web browser.
